@@ -2,6 +2,8 @@
 
 An auto-scrolling, seamless logo strip built as a [Webflow Code Component](https://developers.webflow.com/code-components/introduction). Drop any number of SVGs into a single slot and it sizes, spaces, duplicates, and loops them automatically — no matter how many you add.
 
+**[▶ Watch the demo (Loom)](https://www.loom.com/share/53ae06f2181d48559f91af38493b1df5)**
+
 - **One slot, any count** — clones your logos as needed to fill the strip and loop seamlessly.
 - **Constant speed** — scroll speed stays the same (px/second) regardless of how many logos you drop in.
 - **Theme-aware color** — rewrites SVG fills to `currentColor` so a single `Color` prop (any CSS value, including theme variables) recolors every logo.
@@ -65,9 +67,6 @@ import { LogoMarquee } from './components/LogoMarquee/LogoMarquee'
 This repo is configured as a DevLink library via `webflow.json`. To publish the component to your Webflow Workspace:
 
 ```bash
-# Authenticate once (opens a browser; credentials are saved outside the repo)
-npx webflow auth login
-
 # Bundle + upload + share the library
 npm run wf:import
 ```
