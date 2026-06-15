@@ -1,0 +1,84 @@
+.root {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* Soft fade at both edges. Toggled via the fadeEdges prop. */
+.root[data-fade='true'] {
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    #000 var(--marquee-fade),
+    #000 calc(100% - var(--marquee-fade)),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    #000 var(--marquee-fade),
+    #000 calc(100% - var(--marquee-fade)),
+    transparent 100%
+  );
+}
+
+.track {
+  display: flex;
+  width: max-content;
+  align-items: center;
+  gap: var(--marquee-gap, 4.5rem);
+  padding-block: var(--marquee-pad-block, 0.5rem);
+  padding-inline: calc(var(--marquee-gap, 4.5rem) / 2);
+  will-change: transform;
+  animation: marquee-scroll var(--marquee-duration, 30s) linear infinite;
+}
+
+.root[data-direction='right'] .track {
+  animation-direction: reverse;
+}
+
+/* Holds the raw slot/children content. Never displayed, only cloned from. */
+.source {
+  display: none;
+}
+
+.item {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--marquee-logo-height, 40px);
+}
+
+/* Normalize logos by their height. Targeting the height directly (rather than
+   100%) survives any wrapper element Webflow places around the SVG. */
+.item :where(svg, img) {
+  height: var(--marquee-logo-height, 40px);
+  width: auto;
+  display: block;
+}
+
+.root[data-pause='true']:hover .track {
+  animation-play-state: paused;
+}
+
+@keyframes marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(calc(var(--marquee-shift, 50%) * -1));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .track {
+    animation: none;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .root {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+}

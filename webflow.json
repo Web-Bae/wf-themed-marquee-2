@@ -1,0 +1,17 @@
+{
+  "library": {
+    "name": "WF Themed Marquee",
+    "components": [
+      "./src/**/*.webflow.@(js|jsx|mjs|ts|tsx)"
+    ],
+    "description": "",
+    "id": "wf-themed-marquee"
+  },
+  "telemetry": {
+    "global": {
+      "allowTelemetry": true,
+      "lastPrompted": 1781562079937,
+      "version": "2.1.0"
+    }
+  }
+}
