@@ -12,6 +12,38 @@ An auto-scrolling, seamless logo strip built as a [Webflow Code Component](https
 
 Built with React 19 + Vite. Styles are scoped via CSS Modules and the component renders inside Webflow's Shadow DOM.
 
+## Use it in your own Webflow project
+
+Publishing pushes the component to **your own** Webflow Workspace using your CLI login — nothing here connects to anyone else's workspace.
+
+1. **Fork** this repo to your GitHub account (use the **Fork** button at the top of the GitHub page), then clone your fork:
+   ```bash
+   git clone https://github.com/<your-username>/wf-themed-marquee.git
+   cd wf-themed-marquee
+   npm install
+   ```
+2. **Claim the library as your own.** In `webflow.json`, remove the existing `library.id` (and set a `library.name` you like) so the CLI creates a fresh library in your workspace:
+   ```jsonc
+   {
+     "library": {
+       "name": "My Logo Marquee",
+       "components": ["./src/**/*.webflow.@(js|jsx|mjs|ts|tsx)"]
+       // no "id" — the CLI assigns one on first import
+     }
+   }
+   ```
+3. **Authenticate** with the Webflow CLI (opens a browser; credentials are saved outside the repo):
+   ```bash
+   npx webflow auth login
+   ```
+4. **Share the library** to your workspace. When prompted, choose **Create new code library**:
+   ```bash
+   npm run wf:import
+   ```
+5. In the Webflow Designer, open a site in that workspace, install your library from **Libraries**, drag the **Logo Marquee** component onto the canvas, and drop **SVG embeds** into the Logos slot.
+
+To customize before publishing, edit `src/components/LogoMarquee/` (see [Props](#props)) and re-run `npm run wf:import`.
+
 ## Getting started
 
 ```bash
