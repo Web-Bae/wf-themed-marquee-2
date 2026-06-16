@@ -1,16 +1,16 @@
 {
   "library": {
-    "name": "WF Themed Marquee",
+    "name": "WF Theme Marquee DEMO",
     "components": [
       "./src/**/*.webflow.@(js|jsx|mjs|ts|tsx)"
     ],
-    "description": "",
-    "id": "wf-themed-marquee"
+    "description": "just testing for video fun",
+    "id": "wf-theme-marquee-demo"
   },
   "telemetry": {
     "global": {
       "allowTelemetry": true,
-      "lastPrompted": 1781562079937,
+      "lastPrompted": 1781633737558,
       "version": "2.1.0"
     }
   }

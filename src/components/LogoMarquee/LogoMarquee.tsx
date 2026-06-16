@@ -57,7 +57,7 @@ function recolorFills(node: Element) {
 export function LogoMarquee({
   logos,
   children,
-  speed = 80,
+  speed = 40,
   gap = 72,
   logoHeight = 40,
   fadeEdges = true,
@@ -86,16 +86,24 @@ export function LogoMarquee({
     let frame = 0
     let lastWidth = -1
 
-    const getSources = (): Element[] => {
+    const getAssignedElements = (): Element[] => {
       const slot = source.querySelector('slot')
       if (slot) {
         const assigned = slot.assignedElements({ flatten: true })
+        if (assigned.length > 0) return assigned
+      }
+      return []
+    }
+
+    const getSources = (): Element[] => {
+      const assigned = getAssignedElements()
+      if (assigned.length > 0) {
         // Webflow wraps slot content in a single <div slot="logos">. Unwrap it
         // so each logo becomes its own track item.
         if (assigned.length === 1 && assigned[0].hasAttribute('slot')) {
           return Array.from(assigned[0].children)
         }
-        if (assigned.length > 0) return assigned
+        return assigned
       }
       return Array.from(source.children).filter(
         (el) => el.tagName.toLowerCase() !== 'slot',
@@ -153,7 +161,32 @@ export function LogoMarquee({
     build()
 
     const slot = source.querySelector('slot')
-    slot?.addEventListener('slotchange', scheduleBuild)
+    let mutationObserver: MutationObserver | undefined
+
+    const observeContent = () => {
+      mutationObserver?.disconnect()
+      if (typeof MutationObserver === 'undefined') return
+
+      mutationObserver = new MutationObserver(scheduleBuild)
+      const assigned = getAssignedElements()
+      const roots = assigned.length > 0 ? assigned : [source]
+      roots.forEach((root) => {
+        mutationObserver?.observe(root, {
+          attributes: true,
+          childList: true,
+          characterData: true,
+          subtree: true,
+        })
+      })
+    }
+
+    const handleSlotChange = () => {
+      observeContent()
+      scheduleBuild()
+    }
+
+    observeContent()
+    slot?.addEventListener('slotchange', handleSlotChange)
 
     let observer: ResizeObserver | undefined
     if (typeof ResizeObserver !== 'undefined') {
@@ -167,7 +200,8 @@ export function LogoMarquee({
 
     return () => {
       cancelAnimationFrame(frame)
-      slot?.removeEventListener('slotchange', scheduleBuild)
+      slot?.removeEventListener('slotchange', handleSlotChange)
+      mutationObserver?.disconnect()
       observer?.disconnect()
     }
   }, [gap, logoHeight, speed, contentCount])

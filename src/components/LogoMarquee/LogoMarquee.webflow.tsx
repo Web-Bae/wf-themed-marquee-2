@@ -17,7 +17,7 @@ export default declareComponent(LogoMarquee, {
       name: 'Speed',
       group: 'Animation',
       tooltip: 'Scroll speed in pixels per second.',
-      defaultValue: 80,
+      defaultValue: 40,
       min: 1,
       max: 1000,
     }),
